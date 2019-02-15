@@ -1,0 +1,132 @@
+Problem:    Complete4
+Rows:       84
+Columns:    16
+Non-zeros:  277
+Status:     OPTIMAL
+Objective:  x17 = -3 (MINimum)
+
+   No.   Row name   St   Activity     Lower bound   Upper bound    Marginal
+------ ------------ -- ------------- ------------- ------------- -------------
+     1 c_e_x18_     B              0             0             = 
+     2 c_e_x19_     NS             0             0             =         < eps
+     3 c_e_x20_     NS             0             0             =             1 
+     4 c_e_x21_     NS             0             0             =         < eps
+     5 c_e_x22_     NS             0             0             =         < eps
+     6 c_u_x23_     B             -1                           0 
+     7 c_u_x24_     B             -1                           0 
+     8 c_u_x25_     B             -1                           0 
+     9 c_u_x26_     B             -1                           0 
+    10 c_u_x27_     B             -1                           0 
+    11 c_u_x28_     B             -1                           0 
+    12 c_u_x29_     B             -1                           0 
+    13 c_u_x30_     B             -1                           0 
+    14 c_u_x31_     B             -1                           0 
+    15 c_u_x32_     B             -1                           0 
+    16 c_u_x33_     B             -1                           0 
+    17 c_u_x34_     B             -1                           0 
+    18 c_u_x35_     B             -1                           0 
+    19 c_u_x36_     B             -1                           0 
+    20 c_u_x37_     B             -1                           0 
+    21 c_u_x38_     B             -1                           0 
+    22 c_u_x39_     B             -1                           0 
+    23 c_u_x40_     B             -1                           0 
+    24 c_u_x41_     B             -1                           0 
+    25 c_u_x42_     B             -1                           0 
+    26 c_u_x43_     B             -1                           0 
+    27 c_u_x44_     B             -1                           0 
+    28 c_u_x45_     B             -1                           0 
+    29 c_u_x46_     B             -1                           0 
+    30 c_u_x47_     NU             0                           0            -1 
+    31 c_u_x48_     B              0                           0 
+    32 c_u_x49_     B              0                           0 
+    33 c_u_x50_     B              0                           0 
+    34 c_u_x51_     NU             0                           0         < eps
+    35 c_u_x52_     B              0                           0 
+    36 c_u_x53_     B             -1                           0 
+    37 c_u_x54_     B              0                           0 
+    38 c_u_x55_     B              0                           0 
+    39 c_u_x56_     B              0                           0 
+    40 c_u_x57_     NU             0                           0         < eps
+    41 c_u_x58_     B              0                           0 
+    42 c_u_x59_     B             -1                           0 
+    43 c_u_x60_     NU             0                           0         < eps
+    44 c_u_x61_     NU             0                           0         < eps
+    45 c_u_x62_     B              0                           0 
+    46 c_u_x63_     B              0                           0 
+    47 c_u_x64_     B             -1                           0 
+    48 c_u_x65_     NU             0                           0            -1 
+    49 c_u_x66_     B              0                           0 
+    50 c_u_x67_     NU             0                           0         < eps
+    51 c_u_x68_     B             -1                           0 
+    52 c_u_x69_     NU             0                           0         < eps
+    53 c_u_x70_     B              0                           0 
+    54 c_u_x71_     B              0                           0 
+    55 c_u_x72_     B              0                           0 
+    56 c_u_x73_     B             -1                           0 
+    57 c_u_x74_     B             -1                           0 
+    58 c_u_x75_     B             -1                           0 
+    59 c_u_x76_     B              0                           0 
+    60 c_u_x77_     B              0                           0 
+    61 c_u_x78_     B             -1                           0 
+    62 c_u_x79_     B              0                           0 
+    63 c_u_x80_     B             -1                           0 
+    64 c_u_x81_     B             -1                           0 
+    65 c_u_x82_     B             -1                           0 
+    66 c_u_x83_     B              0                           0 
+    67 c_u_x84_     B              0                           0 
+    68 c_u_x85_     B             -1                           0 
+    69 c_u_x86_     B             -1                           0 
+    70 c_u_x87_     B              0                           0 
+    71 c_u_x88_     B              0                           0 
+    72 c_u_x89_     B             -1                           0 
+    73 c_u_x90_     B             -1                           0 
+    74 c_u_x91_     B              0                           0 
+    75 c_u_x92_     B             -1                           0 
+    76 c_u_x93_     B             -1                           0 
+    77 c_u_x94_     B             -1                           0 
+    78 c_u_x95_     B             -1                           0 
+    79 c_u_x96_     B             -1                           0 
+    80 c_u_x97_     B             -1                           0 
+    81 c_u_x98_     B             -1                           0 
+    82 c_u_x99_     B             -1                           0 
+    83 c_u_x100_    B             -1                           0 
+    84 c_u_x101_    B             -1                           0 
+
+   No. Column name  St   Activity     Lower bound   Upper bound    Marginal
+------ ------------ -- ------------- ------------- ------------- -------------
+     1 x1           NL             0             0                           2 
+     2 x2           NU             1             0             1            -1 
+     3 x3           NU             1             0             1            -1 
+     4 x4           B              1             0             1 
+     5 x5           NU             1             0             1            -1 
+     6 x6           B              2             0               
+     7 x7           B              2             0               
+     8 x8           B              2             0               
+     9 x9           B              2             0               
+    10 x10          B              2             0               
+    11 x11          B              2             0               
+    12 x12          B              3             0               
+    13 x13          B              3             0               
+    14 x14          B              3             0               
+    15 x15          B              3             0               
+    16 x16          B              3             0               
+
+Karush-Kuhn-Tucker optimality conditions:
+
+KKT.PE: max.abs.err = 0.00e+00 on row 0
+        max.rel.err = 0.00e+00 on row 0
+        High quality
+
+KKT.PB: max.abs.err = 0.00e+00 on row 0
+        max.rel.err = 0.00e+00 on row 0
+        High quality
+
+KKT.DE: max.abs.err = 0.00e+00 on column 0
+        max.rel.err = 0.00e+00 on column 0
+        High quality
+
+KKT.DB: max.abs.err = 0.00e+00 on row 0
+        max.rel.err = 0.00e+00 on row 0
+        High quality
+
+End of output
