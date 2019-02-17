@@ -98,6 +98,46 @@ class Graph:
         output += "x[" + str(len(self.cliques) - 1) + "] = " + str(result.x[len(self.cliques) - 1]) 
         print(output)
 
+    def findFCCNPyomo(self):
+        objective = self.getFCCNObjective()
+        constraints = self.getFCCNConstraints()
+        bounds = self.getFCCNBounds()
+
+        def eqConstraintRule(model, j):
+            constraint = []
+            return sum(model.x[k] for k, v in enumerate(constraints[0][j]) if v == 1) == 1
+
+            #for k, v in enumerate(constraints[0][j]):
+            #    if v != 0: constraint.append(k)
+            #return sum(model.x[i] for i in constraint) == 1
+
+        def boundsRule(model, i):
+            return bounds[i]
+        
+        def objectiveRule(model):
+            return sum(model.x[i] for i in model.I)
+
+        #Instantiate Model
+        model = ConcreteModel()
+
+        #Define Indexes
+        model.I = RangeSet(0, len(self.cliques) - 1) #Variable Index
+        model.J = RangeSet(0, len(self.vertices) - 1) #Constraint Index
+
+        #Create Variables
+        model.x = Var(model.I, domain=NonNegativeReals, bounds=boundsRule)
+
+        #Create Objective Function
+        model.obj = Objective(rule=objectiveRule, sense=minimize)
+
+        #Create Constraints
+        model.EqConstraint = Constraint(model.J, rule=eqConstraintRule)
+
+        model.write(self.name + '_FCCN.mps', format='mps')
+        results = SolverFactory('glpk').solve(model)
+        results.write()
+        model.x.display()
+
     def getSEObjective(self):
         #List of 0s except for the final elementr
         return [-1 * floor(i/(len(self.powerset) - 1)) for i in range(len(self.powerset))]
@@ -192,6 +232,10 @@ class Graph:
             #Variables corresponding to single-vertex subsets are upper-bounded by 1
             bounds[i + 1] = (0, 1)
         return bounds
+    
+    def getFCCNBounds(self):
+        return [(0, None) for i in range(len(self.cliques))]
+        
 
     def printLP(self, constraints, objective, bounds):
         print("Objective Function:")
@@ -275,8 +319,6 @@ class Graph:
 
         return [eqlCnstCon, ltCnstCon]
         
-
-
     def findSEPyomo(self):
         objective = self.getSEObjective()
         constraints = self.getSEConstraints()
@@ -324,7 +366,7 @@ class Graph:
         model.EqConstraint = Constraint(model.J, rule=eqConstraintRule)
         model.LtConstraint = Constraint(model.K, rule=ltConstraintRule)
 
-        model.write(self.name + '.mps', format='mps')
+        model.write(self.name + '_SE.mps', format='mps')
 
         #Pretty Print Model
         #solver = SolverFactory('glpk')
@@ -372,14 +414,16 @@ class Graph:
     
 def main():
     graph = Graph()
-    graph.loadGraph("complete3.txt")
+    graph.loadGraph("graph1.txt")
     graph.getVertices()
     graph.findCliques()
     #graph.findFCCN()
     graph.findPowerset()
     #print(len(graph.powerset))
     #graph.findSE()
-    graph.findSEPyomo()
+    #graph.findSEPyomo()
+    graph.findFCCNPyomo()
+    #graph.findFCCN()
 
 if __name__ == "__main__":
     main()
