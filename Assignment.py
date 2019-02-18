@@ -117,10 +117,10 @@ class Graph:
 
     '''
     Get all of the constraints for the Fractional Clique Cover Number linear program
-        Returns
-            A list containing two lists:
-                - list[0]: Contains the lists of all the coefficients of the LHS of the constraints
-                - list[1]: Contains the RHS of every constraint
+    Returns
+        A list containing two lists:
+            - list[0]: Contains the lists of all the coefficients of the LHS of the constraints
+            - list[1]: Contains the RHS of every constraint
     '''
     def getFCCNConstraints(self):
         allLHS = []
@@ -376,7 +376,7 @@ class Graph:
     
 def main():
     graph = Graph()
-    graph.loadGraph("sys.argv[1]")
+    graph.loadGraph(sys.argv[1])
     graph.getVertices()
     graph.findCliques()
     graph.findPowerset()
