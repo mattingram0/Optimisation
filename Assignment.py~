@@ -10,14 +10,20 @@ import matplotlib.pyplot as plt
 
 class Graph:
 
+    ''' Constructor for the Graph Class '''
     def __init__(self, name="", matrix=[], vertices=set(), edges=set(), cliques=[], powerset=[]):
-        self.name = name
+        self.name = name            
         self.matrix = matrix        #NxN Adjacency Matrix
         self.vertices = vertices    #Set of all vertices
         self.edges = edges          #Set of all edges
         self.cliques = cliques      #List of all cliques
         self.powerset = powerset    #List of all subsets of graph
-    
+   
+    '''
+    Load a Graph From a File
+    Args:
+        filename - .txt file to load the graph from
+    '''
     def loadGraph(self, filename):
         path = os.path.join(sys.path[0], filename) 
         with open(path, 'r') as f:
@@ -28,7 +34,7 @@ class Graph:
             #0 the adjacency matrix
             matrix = [[0 for i in range(numVertices)] for j in range(numVertices)]
 
-            #Insert a 1 at matrix[i][j] and matrix[j][i] is vertices i and j are linked by an edge 
+            #Insert a 1 at matrix[i][j] and matrix[j][i] if vertices i and j are linked by an edge 
             for i in range(numEdges):
                 readData = f.readline().split(' ')
                 i = int(readData[0])
@@ -39,12 +45,23 @@ class Graph:
             self.matrix = matrix
         self.name = filename.split(".")[0]
 
+    '''
+    Find the Neighbours of a Vertex
+    Args:
+        v - a vertex represented as in integer
+    Returns:
+        A set containing all of the vertexes adjacent to v in the graph
+    '''
     def getNeighbours(self, v):
         return set([i for i, x in enumerate(self.matrix[v]) if x == 1])
 
-    #Algorithm to find all the maximal cliques in the graph
-    #Modified version of the bronKerbosch algorithm, which finds all cliques
-    #and not only the maximal ones
+    '''
+    Find all Cliques in the Graph (using a modified version of the Bron Kerbosch algorithm
+    Args
+        R - Set of vertices currently in the clique
+        P - Set of candidate vertices
+        X - Set of excluded vertices
+    '''
     def bronKerbosch(self, R, P, X):
         if len(X) == 0:
             self.cliques.append(R)
@@ -59,20 +76,52 @@ class Graph:
 
             P.remove(v)
 
+    '''
+    Find all cliques in the graph. Effectively just a wrapper function for the recursive bronKerbosch function
+    '''
     def findCliques(self):
         #Make a copy to ensure pass-by-value and not pass-by-reference
         self.bronKerbosch(set(), self.vertices.copy(), set())
 
+    '''
+    Find the set of all subsets of vertices of the graphs
+    '''
+    def findPowerset(self):
+        self.powerset = list(chain.from_iterable(combinations(self.vertices, r) for r in range(len(self.vertices)+1)))
+
+    '''
+    Find all the subsets of a set of length between m and n
+    Args
+        s - the set to find the subsets of m
+        m - the lower bound on the length of the subsets to find
+        n - the upper bound on the length of the subsets to find
+    Returns
+        A list containing all the subsets of the specified lengths
+    '''
+    def getPowersetMN(self, s, m, n):
+        return list(chain.from_iterable(combinations(s, r) for r in range(m, n)))
+
+    '''
+    Get a set of all the vertices in the graph
+    '''
     def getVertices(self):
         self.vertices = set([i for i in range(len(self.matrix))])
 
-    '''Returns a zero-list with length equal to the number of cliques'''
+    '''
+    Get the objective function for the Fractional Clique Cover Number linear program
+    Returns
+        A list containing the coefficients of the variables in the objective function
+    '''
     def getFCCNObjective(self):
         return [1 for i in range(len(self.cliques))]
 
-    '''Returns a list containing two list:
-        - The first contains all the lists of the coefficients of the LHS of the constraints
-        - The second contains all the RHS of the constraints'''
+    '''
+    Get all of the constraints for the Fractional Clique Cover Number linear program
+        Returns
+            A list containing two lists:
+                - list[0]: Contains the lists of all the coefficients of the LHS of the constraints
+                - list[1]: Contains the RHS of every constraint
+    '''
     def getFCCNConstraints(self):
         allLHS = []
         for v in self.vertices:
@@ -85,31 +134,24 @@ class Graph:
         allRHS = [1 for i in range(len(allLHS))]
         return [allLHS, allRHS]
 
-    '''Returns the Fractional Clique Cover Number of the Graph, using Linear Programming'''
-    def findFCCN(self):
-        constraints = self.getFCCNConstraints()
-        objective = self.getFCCNObjective()
-        result = opt.linprog(objective, A_eq=constraints[0], b_eq=constraints[1])
-        print("----- Fractional Clique Cover Number -----")
-        print("Value: " + str(result.fun))
-        output = "Found At: "
-        for i in range(len(self.cliques) - 1):
-            output += "x[" + str(i) + "] = " + str(result.x[i]) + ", "
-        output += "x[" + str(len(self.cliques) - 1) + "] = " + str(result.x[len(self.cliques) - 1]) 
-        print(output)
+    '''
+    Get the bounds of all the variables in the Fractional Clique Cover Number Linear Program
+    '''
+    def getFCCNBounds(self):
+        return [(0, None) for i in range(len(self.cliques))]
 
-    def findFCCNPyomo(self):
+    '''
+    Create the linear programming model required to find the Fractional Clique Cover Number
+    '''
+    def createFCCNModel(self):
         objective = self.getFCCNObjective()
         constraints = self.getFCCNConstraints()
         bounds = self.getFCCNBounds()
 
+        #Three inline functions used by Pyomo to create the model
         def eqConstraintRule(model, j):
             constraint = []
             return sum(model.x[k] for k, v in enumerate(constraints[0][j]) if v == 1) == 1
-
-            #for k, v in enumerate(constraints[0][j]):
-            #    if v != 0: constraint.append(k)
-            #return sum(model.x[i] for i in constraint) == 1
 
         def boundsRule(model, i):
             return bounds[i]
@@ -132,33 +174,35 @@ class Graph:
 
         #Create Constraints
         model.EqConstraint = Constraint(model.J, rule=eqConstraintRule)
-
+        
+        #Write the model to a file
         model.write(self.name + '_FCCN.mps', format='mps')
-        results = SolverFactory('glpk').solve(model)
-        results.write()
 
+    '''
+    Get the objective function for the Shannon Entropy linear program
+    Returns
+        A list containing the coefficients of the variables in the objective function
+    '''
     def getSEObjective(self):
         #List of 0s except for the final elementr
         return [-1 * floor(i/(len(self.powerset) - 1)) for i in range(len(self.powerset))]
 
-    def findPowerset(self):
-        self.powerset = list(chain.from_iterable(combinations(self.vertices, r) for r in range(len(self.vertices)+1)))
-
-    '''Gets all the subsets of a set (s) of length between m and n'''
-    def getPowersetMN(self, s, m, n):
-        return list(chain.from_iterable(combinations(s, r) for r in range(m, n)))
-
+    '''
+    Get the constraints for the Shannon Entropy linear program
+    Returns
+        A list containing four lists:
+            - list[0]: Contains the lists of all the coefficients of the LHS of the equality constraints
+            - list[1]: Contains the RHS of all the equality constraints
+            - list[2]: Contains the lists of all the coefficients of the LHS of the less than constraints
+            - list[3]: Contains the RHS of all the less than constraints
+            
+    '''
     def getSEConstraints(self):
-        #This may be wrong - TEST
         eqlLHS, eqlRHS, ltLHS, ltRHS = [], [], [], []
 
         #Empty set equality
         eqlLHS.append([floor(1/i) for i in range(1, len(self.powerset) + 1)])
         eqlRHS.append(0)
-
-        #Single vertex inequalities
-        #ltLHS.extend([0**abs(i) for i in range(0 - j, len(self.powerset) + 1 - j)] for j in range(0, len(self.vertices)))
-        #ltRHS.extend([1 for i in range(0, len(self.vertices))])
 
         #Monotone increasing and neighbourhood inequalities
         for t in self.powerset:
@@ -171,32 +215,14 @@ class Graph:
                 constraint[self.powerset.index(s)] = 1
                
                 difference = set(t).difference(set(s))
-                #print(len(difference))
                 dif = difference.copy()
                 vertex = difference.pop()
-                #difference.pop() will return the only element in the list - needs to be an int to pass to getNeighbours
                 if set(t) == dif.union(self.getNeighbours(vertex)):
-                    #print('T:')
-                    #print(set(t))
-                    #print('S:')
-                    #print(set(s))
-                    #print('set(t).union(self.getNeighbours(vertex)):')
-                    #print(dif.union(self.getNeighbours(vertex)))
-                    #print('Difference:')
-                    #print(dif)
-                    #print('Neighbours:')
-                    #print(self.getNeighbours(vertex)) 
-                    #print()
                     eqlLHS.append(constraint)
                     eqlRHS.append(0)
                 else:
                     ltLHS.append(constraint)
                     ltRHS.append(0)
-
-        #print('No. Equality Constraints')
-        #print(len(eqlLHS))
-        #print('No. Upper Bound Constraints')
-        #print(len(ltLHS))
 
         #Union and intersection constraint
         for c in combinations(self.powerset, 2):
@@ -217,12 +243,11 @@ class Graph:
             ltLHS.append(constraint)
             ltRHS.append(0)
 
-        #print('No. Upper Bound Constraints')
-        #print(len(ltLHS))
-
         return [eqlLHS, ltLHS, eqlRHS, ltRHS]
 
-
+    '''
+    Get the bounds of all the variables in the Shannon Entropy Linear Program
+    '''
     def getSEBounds(self):
         #All variables have to be greater than 0
         bounds = [(0, None) for i in range(len(self.powerset))]
@@ -232,10 +257,9 @@ class Graph:
             bounds[i + 1] = (0, 1)
         return bounds
     
-    def getFCCNBounds(self):
-        return [(0, None) for i in range(len(self.cliques))]
-        
-
+    '''
+    Debugging function used to print out the formulated Linear Program
+    '''
     def printLP(self, constraints, objective, bounds):
         print("Objective Function:")
 
@@ -298,32 +322,14 @@ class Graph:
 
         print()
 
-    def plotGraph(self):
-        G = nx.from_numpy_matrix(np.array(self.matrix))
-        nx.draw(G, with_labels=True)
-        plt.show()
-
-    def convertConstraints(self, constraints):
-        eqlCnst = constraints[0]
-        ltCnst = constraints[1]
-        
-        eqlCnstCon = []
-        ltCnstCon = []
-
-        for e in eqlCnst:
-            eqlCnstCon.append([i for i in range(len(e)) if e[i] == 1])
-
-        for l in ltCnst:
-            ltCnstCon.append([i for i in range(len(l)) if l[i] == 1])
-
-        return [eqlCnstCon, ltCnstCon]
-        
-    def findSEPyomo(self):
+    '''
+    Create the linear programming model required to find the Shannon Entropy
+    '''
+    def createSEModel(self):
         objective = self.getSEObjective()
         constraints = self.getSEConstraints()
         bounds = self.getSEBounds()
 
-        #Inline functions are nasty, but super useful here
         def eqConstraintRule(model, j):
             constraint = []
             for idx, val in enumerate(constraints[0][j]):
@@ -366,63 +372,16 @@ class Graph:
         model.LtConstraint = Constraint(model.K, rule=ltConstraintRule)
 
         model.write(self.name + '_SE.mps', format='mps')
-
-        #Pretty Print Model
-        #solver = SolverFactory('glpk')
-        #solver.options['exact'] = 1
-        #results = solver.solve(model)
-        #results = SolverFactory('glpk').solve(model, options="exact=1")
-        ##print('Write')
-        #results.write()
-#       # print('Pretty Print')
-#        model.pprint()
-#        print('Display')
-#        model.x.display()
-#
-    def findSE(self):
-        constraints = self.getSEConstraints()
-        objective = self.getSEObjective()
-        bounds = self.getSEBounds()
-        #self.printLP(constraints, objective, bounds)
-        #self.plotGraph() 
-       # print('Equality Constraints (1 + 4 = 5)')
-       # print(constraints[0])
-       # print(len(constraints[0]))
-       # print()
-       # print('Upper Bound Constraints (28 - 4 + 120 - 16 - 61')
-       # print(constraints[1])
-       # print(len(constraints[1]))
-       # #print(constraints[1])
-        #print(constraints[2])
-        #print(constraints[3])
-        #print()
-        #print('Number Of Constraints:')
-        print(len(constraints[0]) + len(constraints[1]))
-        #print(opt.show_options(solver="linprog"))
-        #result = opt.linprog(objective, A_eq=constraints[0], b_eq=constraints[2], A_ub=constraints[1], b_ub=constraints[3], bounds=bounds, method='simplex', options={'tol':1e-8})
-        #result = opt.linprog(objective, A_eq=constraints[0], b_eq=constraints[2], A_ub=constraints[1], b_ub=constraints[3], bounds=bounds, method='interior-point', options={'tol':1e-13})
-
-        print("----- Shannon Entropy -----")
-        print("Value: " + str(abs(result.fun)))
-#       output = "Found At: "
-#       for i in range(len(self.powerset) - 1):
-#            output += "x[" + str(i) + "] = " + str(result.x[i]) + ", "
-#        output += "x[" + str(len(self.powerset) - 1) + "] = " + str(result.x[len(self.powerset) - 1]) 
-#        print(output)
-#
     
 def main():
     graph = Graph()
-    graph.loadGraph("graph1.txt")
+    graph.loadGraph("sys.argv")
     graph.getVertices()
     graph.findCliques()
-    #graph.findFCCN()
     graph.findPowerset()
-    #print(len(graph.powerset))
-    #graph.findSE()
-    #graph.findSEPyomo()
-    graph.findFCCNPyomo()
-    #graph.findFCCN()
+
+    graph.createFCCNModel()
+    graph.createSEModel()
 
 if __name__ == "__main__":
     main()
