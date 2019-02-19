@@ -377,11 +377,13 @@ class Graph:
         model.write(modelPath, format='mps')
 
     def solve(self):
+        #Execute the soplex solver on the two models
         outputFCCN = subprocess.Popen("soplex models/" + self.name + "_FCCN_Model.mps --loadset=settings/exact.set -X", shell=True, stdout=subprocess.PIPE).stdout.read()
         outputSE = subprocess.Popen("soplex models/" + self.name + "_SE_Model.mps --loadset=settings/exact.set -X", shell=True, stdout=subprocess.PIPE).stdout.read()
         outputFCCNLines = outputFCCN.decode().split('\n')
         outputSELines = outputSE.decode().split('\n')
 
+        #Process the Fractional Clique Cover Number Output
         solFCCN = []
         objFCCN = Fraction(0)
         for key, value in enumerate(outputFCCNLines):
@@ -393,12 +395,13 @@ class Graph:
         print("Solution:")
         for x in solFCCN:
             xv = x.split('\t')
-            print(xv[0] + " = " + xv[1])
+            print(xv[0] + ": " + str(self.cliques[int(xv[0][1:]) - 1]) + " = " + xv[1])
             objFCCN += Fraction(xv[1])
         print("(All other variables are 0)\n")
         print('Objective Value:')
         print(str(objFCCN))
 
+        #Process the Fractional Clique Cover Number Output
         solSE = []
         objSE = Fraction(0)
         for key, value in enumerate(outputSELines):
@@ -410,10 +413,21 @@ class Graph:
         print("Solution:")
         for x in solSE:
             xv = x.split('\t')
-            print(xv[0] + " = " + xv[1])
+            print(xv[0] + ": " + str(self.powerset[int(xv[0][1:]) - 1]) + " = " + xv[1])
         print("(All other variables are 0)\n")
         print('Objective Value:')
         print(solSE[-1].split('\t')[1])
+
+        #Write the original detailed outputs to a file
+        solutionPathFCCN = os.path.join(os.path.dirname(os.path.realpath(__file__)), "solutions/" + self.name + "_FCCN_Soln.txt")
+        solutionPathSE = os.path.join(os.path.dirname(os.path.realpath(__file__)), "solutions/" + self.name + "_SE_Soln.txt")
+
+        with open(solutionPathFCCN, "wb+") as f:
+            f.write(outputFCCN)
+
+        with open(solutionPathSE, "wb+") as f:
+            f.write(outputSE)
+
 
 def main():
     graph = Graph()
