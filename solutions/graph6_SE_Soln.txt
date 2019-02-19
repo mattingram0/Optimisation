@@ -1,0 +1,174 @@
+SoPlex version 4.0.1 [mode: optimized] [precision: 8 byte] [rational: GMP 6.1.2] [githash: e89d7d5]
+Copyright (c) 1996-2019 Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
+
+Loading settings file <settings/exact.set> . . .
+int:syncmode = 1
+int:readmode = 1
+int:solvemode = 2
+int:checkmode = 2
+real:feastol = 0.00000000e+00
+real:opttol = 0.00000000e+00
+
+Reading (rational) LP file <models/graph6_SE_Model.mps> . . .
+Reading took 0.07 seconds.
+
+LP has 6511 rows 128 columns and 25159 nonzeros.
+
+Initial floating-point solve . . .
+Simplifier removed 15 rows, 8 columns, 1106 nonzeros, 0 col bounds, 995 row bounds
+Reduced LP has 6496 rows 120 columns 23935 nonzeros
+Equilibrium scaling LP
+
+type |   time |   iters | facts |    shift | violation |     obj value 
+  L  |    0.0 |       0 |     1 | 1.00e+00 |  0.00e+00 | 0.00000000e+00
+  E  |    0.0 |       0 |     1 | 0.00e+00 |  1.00e+00 | 0.00000000e+00
+  E  |    0.0 |     197 |     5 | 1.73e-04 |  1.53e+02 | 1.71158836e-08
+  E  |    0.1 |     397 |     6 | 1.73e-04 |  5.43e+02 | 1.00000015e+00
+  E  |    0.1 |     597 |     7 | 1.73e-04 |  1.15e+02 | 3.00000007e+00
+  L  |    0.1 |     669 |     8 | 0.00e+00 |  0.00e+00 | 3.50000000e+00
+  L  |    0.1 |     669 |     8 | 0.00e+00 |  0.00e+00 | 3.50000000e+00
+
+ --- unsimplifying solution and basis
+Floating-point optimal.
+Max. bound violation = 0
+Max. row violation = 0
+Max. reduced cost violation = 0
+Max. dual violation = 0
+Tolerances reached.
+Solved to optimality.
+
+SoPlex status       : problem is solved [optimal]
+Solving time (sec)  : 0.24
+Iterations          : 669
+Objective value     : 3.50000000e+00
+
+
+Primal solution (name, value):
+x2	1
+x3	1
+x4	1
+x5	1
+x6	1
+x7	1
+x8	1
+x9	3/2
+x10	2
+x11	2
+x12	3/2
+x13	2
+x14	2
+x15	3/2
+x16	2
+x17	2
+x18	2
+x19	2
+x20	3/2
+x21	2
+x22	2
+x23	2
+x24	3/2
+x25	2
+x26	2
+x27	2
+x28	2
+x29	1
+x30	2
+x31	5/2
+x32	2
+x33	5/2
+x34	5/2
+x35	5/2
+x36	5/2
+x37	3
+x38	3
+x39	2
+x40	3
+x41	3
+x42	5/2
+x43	5/2
+x44	2
+x45	2
+x46	5/2
+x47	5/2
+x48	5/2
+x49	5/2
+x50	3
+x51	3
+x52	3
+x53	3
+x54	2
+x55	2
+x56	5/2
+x57	5/2
+x58	3
+x59	3
+x60	2
+x61	5/2
+x62	5/2
+x63	2
+x64	2
+x65	5/2
+x66	5/2
+x67	3
+x68	3
+x69	5/2
+x70	7/2
+x71	7/2
+x72	3
+x73	3
+x74	5/2
+x75	5/2
+x76	7/2
+x77	7/2
+x78	7/2
+x79	7/2
+x80	3
+x81	3
+x82	3
+x83	3
+x84	5/2
+x85	5/2
+x86	3
+x87	3
+x88	7/2
+x89	7/2
+x90	5/2
+x91	7/2
+x92	7/2
+x93	3
+x94	3
+x95	3
+x96	3
+x97	5/2
+x98	3
+x99	5/2
+x100	5/2
+x101	7/2
+x102	7/2
+x103	7/2
+x104	7/2
+x105	3
+x106	7/2
+x107	7/2
+x108	7/2
+x109	3
+x110	7/2
+x111	7/2
+x112	7/2
+x113	7/2
+x114	3
+x115	7/2
+x116	7/2
+x117	3
+x118	7/2
+x119	7/2
+x120	3
+x121	7/2
+x122	7/2
+x123	7/2
+x124	7/2
+x125	7/2
+x126	7/2
+x127	7/2
+x128	7/2
+All other variables are zero. Solution has 127 nonzero entries.

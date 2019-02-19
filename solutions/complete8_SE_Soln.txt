@@ -1,0 +1,306 @@
+SoPlex version 4.0.1 [mode: optimized] [precision: 8 byte] [rational: GMP 6.1.2] [githash: e89d7d5]
+Copyright (c) 1996-2019 Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
+
+Loading settings file <settings/exact.set> . . .
+int:syncmode = 1
+int:readmode = 1
+int:solvemode = 2
+int:checkmode = 2
+real:feastol = 0.00000000e+00
+real:opttol = 0.00000000e+00
+
+Reading (rational) LP file <models/complete8_SE_Model.mps> . . .
+Reading took 0.40 seconds.
+
+LP has 27352 rows 256 columns and 107373 nonzeros.
+
+Initial floating-point solve . . .
+Simplifier removed 17 rows, 9 columns, 4038 nonzeros, 0 col bounds, 48057 row bounds
+Reduced LP has 27335 rows 247 columns 102347 nonzeros
+Equilibrium scaling LP
+
+type |   time |   iters | facts |    shift | violation |     obj value 
+  L  |    0.0 |       0 |     1 | 1.00e+00 |  0.00e+00 | 0.00000000e+00
+  E  |    0.0 |       0 |     1 | 0.00e+00 |  1.00e+00 | 0.00000000e+00
+  E  |    0.1 |     197 |     2 | 8.94e-04 |  8.96e+01 | 1.29904996e-08
+  E  |    0.4 |     397 |     5 | 1.04e-03 |  1.13e+02 | 3.42201867e-08
+  E  |    0.7 |     597 |     7 | 1.06e-03 |  4.50e+02 | 5.00000003e+00
+  E  |    0.9 |     797 |     8 | 1.06e-03 |  1.30e+02 | 7.00000004e+00
+  E  |    1.1 |     997 |     9 | 1.07e-03 |  3.03e+01 | 7.00000005e+00
+  E  |    1.2 |    1197 |    11 | 1.07e-03 |  4.28e+00 | 7.00000005e+00
+  L  |    1.4 |    1285 |    13 | 0.00e+00 |  0.00e+00 | 7.00000000e+00
+  L  |    1.4 |    1285 |    13 | 0.00e+00 |  0.00e+00 | 7.00000000e+00
+
+ --- unsimplifying solution and basis
+Floating-point optimal.
+Max. bound violation = 0
+Max. row violation = 81/562949953421312
+Max. reduced cost violation = 3/18014398509481984
+Max. dual violation = 0
+Performing rational reconstruction . . .
+Tolerances reached.
+Solved to optimality.
+
+SoPlex status       : problem is solved [optimal]
+Solving time (sec)  : 12.17
+Iterations          : 1285
+Objective value     : 7.00000000e+00
+
+
+Primal solution (name, value):
+x2	1
+x3	1
+x4	1
+x5	1
+x6	1
+x7	1
+x8	1
+x9	1
+x10	2
+x11	2
+x12	2
+x13	2
+x14	2
+x15	2
+x16	2
+x17	2
+x18	2
+x19	2
+x20	2
+x21	2
+x22	2
+x23	2
+x24	2
+x25	2
+x26	2
+x27	2
+x28	2
+x29	2
+x30	2
+x31	2
+x32	2
+x33	2
+x34	2
+x35	2
+x36	2
+x37	2
+x38	3
+x39	3
+x40	3
+x41	3
+x42	3
+x43	3
+x44	3
+x45	3
+x46	3
+x47	3
+x48	3
+x49	3
+x50	3
+x51	3
+x52	3
+x53	3
+x54	3
+x55	3
+x56	3
+x57	3
+x58	3
+x59	3
+x60	3
+x61	3
+x62	3
+x63	3
+x64	3
+x65	3
+x66	3
+x67	3
+x68	3
+x69	3
+x70	3
+x71	3
+x72	3
+x73	3
+x74	3
+x75	3
+x76	3
+x77	3
+x78	3
+x79	3
+x80	3
+x81	3
+x82	3
+x83	3
+x84	3
+x85	3
+x86	3
+x87	3
+x88	3
+x89	3
+x90	3
+x91	3
+x92	3
+x93	3
+x94	4
+x95	4
+x96	4
+x97	4
+x98	4
+x99	4
+x100	4
+x101	4
+x102	4
+x103	4
+x104	4
+x105	4
+x106	4
+x107	4
+x108	4
+x109	4
+x110	4
+x111	4
+x112	4
+x113	4
+x114	4
+x115	4
+x116	4
+x117	4
+x118	4
+x119	4
+x120	4
+x121	4
+x122	4
+x123	4
+x124	4
+x125	4
+x126	4
+x127	4
+x128	4
+x129	4
+x130	4
+x131	4
+x132	4
+x133	4
+x134	4
+x135	4
+x136	4
+x137	4
+x138	4
+x139	4
+x140	4
+x141	4
+x142	4
+x143	4
+x144	4
+x145	4
+x146	4
+x147	4
+x148	4
+x149	4
+x150	4
+x151	4
+x152	4
+x153	4
+x154	4
+x155	4
+x156	4
+x157	4
+x158	4
+x159	4
+x160	4
+x161	4
+x162	4
+x163	4
+x164	5
+x165	5
+x166	5
+x167	5
+x168	5
+x169	5
+x170	5
+x171	5
+x172	5
+x173	5
+x174	5
+x175	5
+x176	5
+x177	5
+x178	5
+x179	5
+x180	5
+x181	5
+x182	5
+x183	5
+x184	5
+x185	5
+x186	5
+x187	5
+x188	5
+x189	5
+x190	5
+x191	5
+x192	5
+x193	5
+x194	5
+x195	5
+x196	5
+x197	5
+x198	5
+x199	5
+x200	5
+x201	5
+x202	5
+x203	5
+x204	5
+x205	5
+x206	5
+x207	5
+x208	5
+x209	5
+x210	5
+x211	5
+x212	5
+x213	5
+x214	5
+x215	5
+x216	5
+x217	5
+x218	5
+x219	5
+x220	6
+x221	6
+x222	6
+x223	6
+x224	6
+x225	6
+x226	6
+x227	6
+x228	6
+x229	6
+x230	6
+x231	6
+x232	6
+x233	6
+x234	6
+x235	6
+x236	6
+x237	6
+x238	6
+x239	6
+x240	6
+x241	6
+x242	6
+x243	6
+x244	6
+x245	6
+x246	6
+x247	6
+x248	7
+x249	7
+x250	7
+x251	7
+x252	7
+x253	7
+x254	7
+x255	7
+x256	7
+All other variables are zero. Solution has 255 nonzero entries.

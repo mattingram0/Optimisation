@@ -1,0 +1,48 @@
+SoPlex version 4.0.1 [mode: optimized] [precision: 8 byte] [rational: GMP 6.1.2] [githash: e89d7d5]
+Copyright (c) 1996-2019 Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
+
+Loading settings file <settings/exact.set> . . .
+int:syncmode = 1
+int:readmode = 1
+int:solvemode = 2
+int:checkmode = 2
+real:feastol = 0.00000000e+00
+real:opttol = 0.00000000e+00
+
+Reading (rational) LP file <models/graph2_FCCN_Model.mps> . . .
+Reading took 0.00 seconds.
+
+LP has 7 rows 17 columns and 25 nonzeros.
+
+Initial floating-point solve . . .
+Simplifier removed 0 rows, 1 columns, 0 nonzeros, 0 col bounds, 0 row bounds
+Reduced LP has 7 rows 16 columns 25 nonzeros
+Equilibrium scaling LP
+
+type |   time |   iters | facts |    shift | violation |     obj value 
+  L  |    0.0 |       0 |     1 | 0.00e+00 |  7.00e+00 | 0.00000000e+00
+  L  |    0.0 |      10 |     2 | 0.00e+00 |  0.00e+00 | 3.50000000e+00
+
+ --- unsimplifying solution and basis
+Floating-point optimal.
+Max. bound violation = 0
+Max. row violation = 0
+Max. reduced cost violation = 0
+Max. dual violation = 0
+Tolerances reached.
+Solved to optimality.
+
+SoPlex status       : problem is solved [optimal]
+Solving time (sec)  : 0.00
+Iterations          : 10
+Objective value     : 3.50000000e+00
+
+
+Primal solution (name, value):
+x4	1/2
+x5	1/2
+x8	1
+x10	1/2
+x11	1/2
+x13	1/2
+All other variables are zero. Solution has 6 nonzero entries.
