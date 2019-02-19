@@ -3,10 +3,11 @@ from itertools import chain, combinations
 from scipy import optimize as opt
 from math import floor, inf
 from pyomo.environ import *
+from fractions import Fraction
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
-
+import subprocess
 
 class Graph:
 
@@ -43,7 +44,7 @@ class Graph:
                 matrix[j][i] = 1
 
             self.matrix = matrix
-        self.name = filename.split(".")[0]
+        self.name = filename.split("/")[1].split(".")[0]
 
     '''
     Find the Neighbours of a Vertex
@@ -176,7 +177,8 @@ class Graph:
         model.EqConstraint = Constraint(model.J, rule=eqConstraintRule)
         
         #Write the model to a file
-        model.write(self.name + '_FCCN.mps', format='mps')
+        modelPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "models/" + self.name + "_FCCN_Model.mps")
+        model.write(modelPath, format='mps')
 
     '''
     Get the objective function for the Shannon Entropy linear program
@@ -195,7 +197,6 @@ class Graph:
             - list[1]: Contains the RHS of all the equality constraints
             - list[2]: Contains the lists of all the coefficients of the LHS of the less than constraints
             - list[3]: Contains the RHS of all the less than constraints
-            
     '''
     def getSEConstraints(self):
         eqlLHS, eqlRHS, ltLHS, ltRHS = [], [], [], []
@@ -365,15 +366,55 @@ class Graph:
         model.x = Var(model.I, domain=NonNegativeReals, bounds=boundsRule)
 
         #Create Objective Function
-        model.obj = Objective(expr = (-1) * model.x[len(self.powerset) - 1])
+        model.obj = Objective(expr = model.x[len(self.powerset) - 1], sense = maximize)
 
         #Create Constraints
         model.EqConstraint = Constraint(model.J, rule=eqConstraintRule)
         model.LtConstraint = Constraint(model.K, rule=ltConstraintRule)
 
         #Write Model to mps file 
-        model.write(self.name + '_SE.mps', format='mps')
-    
+        modelPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "models/" + self.name + "_SE_Model.mps")
+        model.write(modelPath, format='mps')
+
+    def solve(self):
+        outputFCCN = subprocess.Popen("soplex models/" + self.name + "_FCCN_Model.mps --loadset=settings/exact.set -X", shell=True, stdout=subprocess.PIPE).stdout.read()
+        outputSE = subprocess.Popen("soplex models/" + self.name + "_SE_Model.mps --loadset=settings/exact.set -X", shell=True, stdout=subprocess.PIPE).stdout.read()
+        outputFCCNLines = outputFCCN.decode().split('\n')
+        outputSELines = outputSE.decode().split('\n')
+
+        solFCCN = []
+        objFCCN = Fraction(0)
+        for key, value in enumerate(outputFCCNLines):
+            if value == 'Primal solution (name, value):':
+                solFCCN = outputFCCNLines[key + 1:-2]
+                continue
+
+        print("----- Fractional Clique Cover Number -----")
+        print("Solution:")
+        for x in solFCCN:
+            xv = x.split('\t')
+            print(xv[0] + " = " + xv[1])
+            objFCCN += Fraction(xv[1])
+        print("(All other variables are 0)\n")
+        print('Objective Value:')
+        print(str(objFCCN))
+
+        solSE = []
+        objSE = Fraction(0)
+        for key, value in enumerate(outputSELines):
+            if value == 'Primal solution (name, value):':
+                solSE = outputSELines[key + 1:-2]
+                continue
+
+        print("\n----- Shannon Entropy -----")
+        print("Solution:")
+        for x in solSE:
+            xv = x.split('\t')
+            print(xv[0] + " = " + xv[1])
+        print("(All other variables are 0)\n")
+        print('Objective Value:')
+        print(solSE[-1].split('\t')[1])
+
 def main():
     graph = Graph()
     graph.loadGraph(sys.argv[1])
@@ -383,6 +424,8 @@ def main():
 
     graph.createFCCNModel()
     graph.createSEModel()
+
+    graph.solve()
 
 if __name__ == "__main__":
     main()
