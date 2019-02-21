@@ -1,6 +1,8 @@
 *~
 *.nl
 *.png
+*.docx
+MaxsPaper.pdf
 Report.aux
 Report.log
 Report.ltx
