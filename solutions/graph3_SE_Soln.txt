@@ -10,7 +10,7 @@ real:feastol = 0.00000000e+00
 real:opttol = 0.00000000e+00
 
 Reading (rational) LP file <models/graph3_SE_Model.mps> . . .
-Reading took 0.07 seconds.
+Reading took 0.06 seconds.
 
 LP has 6511 rows 128 columns and 25159 nonzeros.
 
@@ -22,7 +22,7 @@ Equilibrium scaling LP
 type |   time |   iters | facts |    shift | violation |     obj value 
   L  |    0.0 |       0 |     1 | 1.00e+00 |  0.00e+00 | 0.00000000e+00
   E  |    0.0 |       0 |     1 | 0.00e+00 |  1.00e+00 | 0.00000000e+00
-  E  |    0.1 |     197 |     5 | 1.74e-04 |  1.59e+02 | 3.56118188e-08
+  E  |    0.0 |     197 |     5 | 1.74e-04 |  1.59e+02 | 3.56118188e-08
   E  |    0.1 |     397 |     6 | 1.78e-04 |  2.97e+02 | 2.00000015e+00
   L  |    0.1 |     539 |     8 | 0.00e+00 |  0.00e+00 | 3.50000000e+00
   L  |    0.1 |     539 |     8 | 0.00e+00 |  0.00e+00 | 3.50000000e+00

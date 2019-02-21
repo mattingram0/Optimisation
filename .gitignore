@@ -1,2 +1,8 @@
 *~
 *.nl
+*.png
+Report.aux
+Report.log
+Report.ltx
+Report.out
+Report.synctex.gz

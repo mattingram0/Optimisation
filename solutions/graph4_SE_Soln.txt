@@ -10,7 +10,7 @@ real:feastol = 0.00000000e+00
 real:opttol = 0.00000000e+00
 
 Reading (rational) LP file <models/graph4_SE_Model.mps> . . .
-Reading took 0.07 seconds.
+Reading took 0.06 seconds.
 
 LP has 6511 rows 128 columns and 25159 nonzeros.
 

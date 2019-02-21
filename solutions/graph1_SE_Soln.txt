@@ -39,7 +39,7 @@ Tolerances reached.
 Solved to optimality.
 
 SoPlex status       : problem is solved [optimal]
-Solving time (sec)  : 0.26
+Solving time (sec)  : 0.24
 Iterations          : 733
 Objective value     : 3.66666667e+00
 

@@ -1,12 +1,8 @@
 import os, sys, itertools
 from itertools import chain, combinations
-from scipy import optimize as opt
 from math import floor, inf
 from pyomo.environ import *
 from fractions import Fraction
-import numpy as np
-import networkx as nx
-import matplotlib.pyplot as plt
 import subprocess
 
 class Graph:
@@ -211,7 +207,6 @@ class Graph:
             subpowerset = self.getPowersetMN(t, len(t) - 1, len(t))
             for s in subpowerset:
                 constraint = [0 for i in range(len(self.powerset))]
-                #NOTE THAT ALL GREATER THAN CONSTRAINTS HAVE BEEN INVERTED TO BE LESS THAN CONSTRAINTS
                 constraint[self.powerset.index(t)] = -1
                 constraint[self.powerset.index(s)] = 1
                
@@ -236,7 +231,6 @@ class Graph:
 
             if s.issubset(t) or t.issubset(s): continue 
 
-            #NOTE THAT ALL GREATER THAN CONSTRAINTS HAVE BEEN INVERTED TO BE LESS THAN CONSTRAINTS
             constraint[self.powerset.index(tuple(s))] = -1
             constraint[self.powerset.index(tuple(t))] = -1
             constraint[self.powerset.index(tuple(union))] = 1
@@ -428,7 +422,6 @@ class Graph:
         with open(solutionPathSE, "wb+") as f:
             f.write(outputSE)
 
-
 def main():
     graph = Graph()
     graph.loadGraph(sys.argv[1])
@@ -439,6 +432,7 @@ def main():
     graph.createFCCNModel()
     graph.createSEModel()
 
+    #graph.printLP()
     graph.solve()
 
 if __name__ == "__main__":

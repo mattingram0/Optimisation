@@ -10,7 +10,7 @@ real:feastol = 0.00000000e+00
 real:opttol = 0.00000000e+00
 
 Reading (rational) LP file <models/graph2_SE_Model.mps> . . .
-Reading took 0.07 seconds.
+Reading took 0.06 seconds.
 
 LP has 6511 rows 128 columns and 25159 nonzeros.
 
@@ -38,7 +38,7 @@ Tolerances reached.
 Solved to optimality.
 
 SoPlex status       : problem is solved [optimal]
-Solving time (sec)  : 0.22
+Solving time (sec)  : 0.21
 Iterations          : 597
 Objective value     : 3.50000000e+00
 
